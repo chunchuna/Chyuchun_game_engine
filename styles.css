@@ -1,0 +1,57 @@
+/* 添加代码编辑器相关样式 */
+.code-editor-dialog {
+    position: fixed;
+    background: var(--imgui-bg);
+    border: 1px solid var(--imgui-border);
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    min-width: 400px;
+    min-height: 300px;
+    resize: both;
+    overflow: hidden;
+}
+
+.code-editor-header {
+    background: var(--imgui-header);
+    padding: 4px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+    user-select: none;
+}
+
+.code-editor-header h3 {
+    margin: 0;
+    color: var(--imgui-text);
+    font-size: 14px;
+}
+
+.code-editor-close {
+    background: none;
+    border: none;
+    color: var(--imgui-text);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.code-editor-close:hover {
+    color: #ff5555;
+}
+
+.code-editor-content {
+    height: calc(100% - 70px);
+}
+
+.code-editor-footer {
+    background: var(--imgui-header);
+    padding: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+} 

@@ -934,25 +934,75 @@ document.addEventListener('DOMContentLoaded', function() {
     // 修改 createCodeEditor 函数
     function createCodeEditor(component, code) {
         const dialog = document.createElement('div');
-        dialog.className = 'code-editor-dialog';
+        dialog.className = 'code-editor-dialog imgui-window';
+        
+        // 设置初始大小
+        const width = 800;
+        const height = 600;
+        
+        // 计算窗口中心位置
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const left = Math.max(0, (windowWidth - width) / 2);
+        const top = Math.max(0, (windowHeight - height) / 2)+600;
+        
+        // 设置位置和大小
+        dialog.style.width = width + 'px';
+        dialog.style.height = height + 'px';
+        dialog.style.left = left + 'px';
+        dialog.style.top = top + 'px';
+        
         dialog.innerHTML = `
             <div class="code-editor-header">
                 <h3>${component}</h3>
-                <button class="code-editor-close">×</button>
+                <button class="code-editor-close imgui-button">×</button>
             </div>
             <div class="code-editor-content">
-                <div id="monaco-editor" style="height: 400px;"></div>
+                <div id="monaco-editor-${component}" style="height: 100%;"></div>
             </div>
-            <div class="code-editor-actions">
-                <button class="code-editor-button code-editor-cancel">Cancel</button>
-                <button class="code-editor-button code-editor-save">Save</button>
+            <div class="code-editor-footer">
+                <button class="imgui-button code-editor-cancel">Cancel</button>
+                <button class="imgui-button code-editor-save">Save</button>
             </div>
         `;
+        
         document.body.appendChild(dialog);
+
+        // 添加拖拽功能
+        let isDragging = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        dialog.querySelector('.code-editor-header').addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('code-editor-close')) return;
+            
+            isDragging = true;
+            dragOffsetX = e.clientX - dialog.offsetLeft;
+            dragOffsetY = e.clientY - dialog.offsetTop;
+            
+            // 提高正在拖拽窗口的层级
+            dialog.style.zIndex = getHighestZIndex() + 1;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            dialog.style.left = (e.clientX - dragOffsetX) + 'px';
+            dialog.style.top = (e.clientY - dragOffsetY) + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // 点击窗口时提升层级
+        dialog.addEventListener('mousedown', () => {
+            dialog.style.zIndex = getHighestZIndex() + 1;
+        });
 
         // 创建 Monaco Editor
         require(['vs/editor/editor.main'], function() {
-            const editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+            const editor = monaco.editor.create(document.getElementById(`monaco-editor-${component}`), {
                 value: code,
                 language: 'javascript',
                 theme: 'vs-dark',
@@ -973,13 +1023,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 处理关闭
             dialog.querySelector('.code-editor-close').onclick = () => {
-                editor.dispose(); // 清理编辑器
+                editor.dispose();
                 dialog.remove();
             };
             
             // 处理取消
             dialog.querySelector('.code-editor-cancel').onclick = () => {
-                editor.dispose(); // 清理编辑器
+                editor.dispose();
                 dialog.remove();
             };
             
@@ -1021,16 +1071,32 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         }
                     }
-                    editor.dispose(); // 清理编辑器
+                    editor.dispose();
                     dialog.remove();
                     renderInspector();
                 } catch (error) {
                     alert('Invalid code: ' + error.message);
                 }
             };
+
+            // 监听窗口大小变化，更新编辑器大小
+            const resizeObserver = new ResizeObserver(() => {
+                editor.layout();
+            });
+            resizeObserver.observe(dialog);
         });
 
         return dialog;
+    }
+
+    // 获取最高的 z-index
+    function getHighestZIndex() {
+        return Math.max(
+            ...Array.from(document.querySelectorAll('body *'))
+                .map(el => parseFloat(window.getComputedStyle(el).zIndex))
+                .filter(zIndex => !isNaN(zIndex)),
+            0
+        );
     }
 
     // 添加创建组件实例的函数
