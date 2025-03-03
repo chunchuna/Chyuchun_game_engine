@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity-like Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+</head>
+<body>
+    <div class="editor">
+        <div class="header">
+            <h1>Unity-like Editor</h1>
+            <div class="toolbar">
+                <button id="run-button" class="toolbar-button" title="Play">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="pause-button" class="toolbar-button active" title="Pause">
+                    <i class="fas fa-pause"></i>
+                </button>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="hierarchy-panel">
+                    <div class="panel-header">Hierarchy</div>
+                    <div id="hierarchy-content" class="panel-content"></div>
+                </div>
+            </div>
+            <div class="center-panel">
+                <div class="game-panel">
+                    <div class="panel-header">Game</div>
+                    <div id="game-content" class="panel-content">
+                        <svg id="game-canvas" width="100%" height="100%"></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="inspector-panel">
+                    <div class="panel-header">Inspector</div>
+                    <div id="inspector-content" class="panel-content scrollable">
+                        <div class="component-section">
+                            <div class="component-header">
+                                <h3>Transform Component</h3>
+                                <button class="code-edit-btn" title="Edit Code" data-component="transform">
+                                    <i class="fas fa-code"></i>
+                                </button>
+                            </div>
+                            <!-- ... existing component fields ... -->
+                        </div>
+
+                        <div class="component-section">
+                            <div class="component-header">
+                                <h3>Renderer Component</h3>
+                                <button class="code-edit-btn" title="Edit Code" data-component="renderer">
+                                    <i class="fas fa-code"></i>
+                                </button>
+                            </div>
+                            <!-- ... existing component fields ... -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-panel">
+            <div class="project-panel">
+                <div class="panel-header">Project</div>
+                <div id="project-content" class="panel-content">
+                    <div class="prefab-item" data-type="cube" draggable="true">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <rect x="10" y="10" width="30" height="30" fill="#4287f5"></rect>
+                        </svg>
+                        <div class="prefab-name">Cube</div>
+                    </div>
+                    <div class="prefab-item" data-type="circle" draggable="true">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="15" fill="#f54242"></circle>
+                        </svg>
+                        <div class="prefab-name">Circle</div>
+                    </div>
+                    <div class="prefab-item" data-type="triangle" draggable="true">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <polygon points="25,10 40,40 10,40" fill="#42f557"></polygon>
+                        </svg>
+                        <div class="prefab-name">Triangle</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

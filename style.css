@@ -1,0 +1,486 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #252526;
+    color: #e0e0e0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.editor {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    background-color: #2d2d30;
+    padding: 0 10px;
+    border-bottom: 1px solid #3e3e40;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header h1 {
+    font-size: 16px;
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+.toolbar {
+    display: flex;
+    gap: 5px;
+}
+
+.toolbar-button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: #3e3e42;
+    border-radius: 3px;
+    color: #e0e0e0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar-button.active {
+    background-color: #007acc;
+    color: white;
+}
+
+.toolbar-button:hover {
+    background-color: #4e4e52;
+}
+
+.toolbar-button.active:hover {
+    background-color: #1c87d4;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.left-panel, .right-panel {
+    width: 250px;
+    background-color: #252526;
+    border-right: 1px solid #3e3e40;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-panel {
+    width: 250px;
+    background-color: #252526;
+    border-left: 1px solid #3e3e40;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.center-panel {
+    flex: 1;
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+}
+
+.hierarchy-panel, .inspector-panel, .game-panel, .project-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.inspector-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.panel-header {
+    background-color: #333337;
+    padding: 8px 10px;
+    font-weight: 500;
+    font-size: 12px;
+    border-bottom: 1px solid #3e3e40;
+    color: #cccccc;
+    text-transform: uppercase;
+}
+
+.panel-content {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Custom Unity-style scrollbar */
+.panel-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+    background: #252526;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+    background-color: #3e3e42;
+    border-radius: 5px;
+}
+
+.panel-content::-webkit-scrollbar-thumb:hover {
+    background-color: #505054;
+}
+
+.bottom-panel {
+    height: 200px;
+    background-color: #252526;
+    border-top: 1px solid #3e3e40;
+    flex-shrink: 0;
+}
+
+#game-content {
+    background-color: #1e1e1e;
+    position: relative;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.prefab-item {
+    display: inline-block;
+    margin: 10px;
+    width: 70px;
+    height: 90px;
+    background-color: #2d2d31;
+    border-radius: 3px;
+    text-align: center;
+    padding: 10px 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.prefab-item:hover {
+    background-color: #3e3e42;
+}
+
+.prefab-name {
+    margin-top: 5px;
+    font-size: 11px;
+}
+
+.prefab-item .prefab-preview {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prefab-item img {
+    object-fit: contain;
+}
+
+.hierarchy-item {
+    padding: 5px;
+    margin: 2px 0;
+    background-color: #2d2d31;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.hierarchy-item.selected {
+    background-color: #007acc;
+}
+
+.hierarchy-item svg {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+.inspector-field {
+    margin-bottom: 10px;
+}
+
+.inspector-field label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
+    color: #cccccc;
+}
+
+.inspector-field input {
+    background-color: #3c3c3c;
+    border: 1px solid #555555;
+    padding: 4px 6px;
+    color: #e0e0e0;
+    width: 100%;
+    border-radius: 2px;
+    font-size: 12px;
+}
+
+.inspector-field input[type="checkbox"] {
+    width: auto;
+    margin-left: 0;
+}
+
+.inspector-field input:focus {
+    outline: none;
+    border-color: #007acc;
+}
+
+.inspector-field input[type="color"] {
+    height: 24px;
+    padding: 0;
+}
+
+.component-section {
+    margin-top: 15px;
+    background-color: #2d2d31;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.component-section h3 {
+    font-size: 12px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #e0e0e0;
+    border-bottom: 1px solid #3e3e40;
+    padding-bottom: 5px;
+}
+
+.add-component-btn {
+    width: 100%;
+    background-color: #3c3c3c;
+    border: 1px solid #555555;
+    color: #e0e0e0;
+    padding: 6px 10px;
+    border-radius: 3px;
+    margin-top: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.add-component-btn i {
+    margin-right: 5px;
+}
+
+.add-component-btn:hover {
+    background-color: #4e4e52;
+}
+
+.component-menu {
+    position: absolute;
+    background-color: #3c3c3c;
+    border: 1px solid #555555;
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.running-mode .hierarchy-item,
+.running-mode .inspector-field input {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.running-mode #game-content {
+    border: 2px solid #007acc;
+}
+
+.context-menu {
+    position: fixed;
+    background-color: #3c3c3c;
+    border: 1px solid #555555;
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item:hover {
+    background-color: #505050;
+}
+
+.menu-item i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.inspector-panel .panel-content {
+    flex: 1;
+    min-height: 0;
+}
+
+/* 自定义滚动条样式（可选） */
+.scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 修改 inspector-content 的样式 */
+#inspector-content.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    padding-right: 5px;
+}
+
+.component-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #3e3e40;
+    padding-bottom: 5px;
+}
+
+.component-header h3 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #e0e0e0;
+    margin: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.code-edit-btn {
+    background: none;
+    border: none;
+    color: #007acc;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.code-edit-btn:hover {
+    background-color: rgba(0, 122, 204, 0.2);
+}
+
+/* 代码编辑器对话框样式 */
+.code-editor-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1e1e1e;
+    border: 1px solid #3e3e40;
+    border-radius: 4px;
+    padding: 20px;
+    min-width: 800px;
+    min-height: 600px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.code-editor-content {
+    flex: 1;
+    margin: 15px 0;
+    min-height: 400px;
+}
+
+#monaco-editor {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #3e3e40;
+}
+
+.code-editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.code-editor-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.code-editor-save {
+    background-color: #007acc;
+    color: white;
+}
+
+.code-editor-cancel {
+    background-color: #3c3c3c;
+    color: #e0e0e0;
+}
+
+.script-item {
+    background-color: #2d2d31;
+}
+
+.script-item:hover {
+    background-color: #3e3e42;
+}
+
+.script-item .prefab-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+/* 拖拽提示样式 */
+.inspector-panel.drag-over {
+    background-color: rgba(0, 122, 204, 0.1);
+    border: 2px dashed #007acc;
+}
